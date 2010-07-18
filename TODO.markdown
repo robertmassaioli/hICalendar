@@ -61,3 +61,8 @@ What are the Steps that you should take to parse the data?
  - Turn the tokens into a parse tree with syntax checking as you go. (tokens are not in the right order)
  - Turn the parse tree into an ICalendar which is made up of the components.
  - Provide a nice interface for querying this ICalendar object.
+
+Important Notes
+---------------
+
+ - [Date Stamp, Created, Last Modified] :: [LocalTime]
