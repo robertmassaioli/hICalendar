@@ -7,7 +7,9 @@ BuildDir=./build
 HTMLdir=$(BuildDir)/html
 markdown=markdown-calibre
 
-all: hICalendar.cabal
+all: doc
+
+build: hICalendar.cabal
 	runhaskell Setup.hs configure
 	runhaskell Setup.hs build
 
