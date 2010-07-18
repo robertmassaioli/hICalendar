@@ -59,6 +59,31 @@ data VEvent = VEvent
 data Transparency = Transparent 
                   | Opaque
 
+data VAlarm = AudioProperties
+                { alarmAction :: ?
+                , alarmTrigger :: ?
+                , alarmDuration :: Maybe Double -- in hours
+                , alarmRepeat :: Maybe ?
+                , alarmAttach = Maybe ?
+                }
+            | DisplayProperties
+                { alarmAction :: ?
+                , alarmDescription :: String
+                , alarmTrigger :: ?
+                , alarmDuration :: Maybe Double -- in hours
+                , alarmRepeat :: Maybe ?
+                }
+            | EmailProperties
+                { alarmAction :: ?
+                , alarmDescription :: String
+                , alarmTrigger :: ?
+                , alarmSummary :: String
+                , alarmAttendees :: [Attendee] -- This list must have atleast one element.
+                , alarmDurationAndRepeat :: Maybe ?
+                , alarmAttachments :: [Attachments]
+                }
+
+
 data VTodo = VTodo 
                 { todoStamp :: LocalTime -- Required
                 , todoCreated :: Maybe LocalTime -- Optional

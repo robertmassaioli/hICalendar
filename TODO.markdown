@@ -20,6 +20,21 @@ Extension Framework
  - Write an extension framework that is easy to use and helps everyone. It should make it simple for people to 
    add whatever features that they like to the ICalendar.
 
+Extra Resources
+---------------
+
+ - We have to figure out how to pass around all of the useful resources (files and urls) that are supposed 
+   to be attached to the calendar.
+ - If there is a localhost url that is attched that points to localhost then a warning should come up.
+ - You should be able to run a resource check at any time so that you know wether or not you have all of the
+   resources that you need to load the ICalendar perfectly.
+
+Importing And Exporting
+-----------------------
+
+ - Think about the errors and corner conditions that you are likely to encounter. The file should be able
+   to be loaded in best attempt style every time. A nice, easy on the eyes screen should come up every time.
+
 What Components are in the Spec?
 ================================
 
