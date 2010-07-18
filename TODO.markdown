@@ -3,14 +3,19 @@ What Do We Want?
 
  - We want to get out a bunch of easy to read data that we can just use in our program.
  - It should be as simple an readICalendar :: ByteString -> ICalendar
-
  - Well want to iterate over the events in a nice and easy way so that we could print them out to the screen.
  - We want to just add events back to the calender whenever we please.
  - We want lazy and strict reading versions. (Maybe)
-
  - People will want to read and write these ICalendar files round about equally.
-
  - English Text box input would be nice as a feature.
+
+Extension Framework
+-------------------
+
+ - The ICalendar spec allows for extensions so we should too. Read up on good ways to implement extension 
+   frameworks.
+ - Write an extension framework that is easy to use and helps everyone. It should make it simple for people to 
+   add whatever features that they like to the ICalendar.
 
 What Components are in the Spec?
 ================================
