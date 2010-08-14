@@ -25,6 +25,11 @@ was made or not. You should be able to read the source code and understand what 
 said at the same time.
 
 > module Main where
+>
+> import Network.URI
+> import Data.Time.Calendar
+> import Data.Time.LocalTime
+> import System.Time
 
 Property Vaule Data Types
 -------------------------
@@ -52,20 +57,20 @@ and should just be used directly rather than through another definition.
 
 > type Binary               = [Bool]
 > type CalendarUserAddress  = URI
-> type icalDate             = Day
-> type icalDateTime         = LocalTime
+> type ICalDate             = Data.Time.Calendar.Day
+> type ICalDateTime         = LocalTime
 > type Duration             = TimeDiff  -- may need a sign too for direction
 > data Period = PeriodExplicit 
->               { periodStart :: icalDateTime 
->               , periodEnd   :: icalDateTime }
->             | PeriodStart icalDateTime Duration
+>               { periodStart :: ICalDateTime 
+>               , periodEnd   :: ICalDateTime }
+>             | PeriodStart ICalDateTime Duration
 
 The size and shape of the Recur structure is currently a mess. It suggests that there
 should be a more elegant structure that will encompass the same functionlity.
 
 > data Recur = Recur 
 >     { recurFrequency :: Frequency
->     , recurUntilOrCount :: Maybe (Either (Either Date DateTime) Integer)  -- this could be cleaned up
+>     , recurUntilOrCount :: Maybe (Either (Either ICalDate ICalDateTime) Integer)  -- this could be cleaned up
 >     , recurInterval :: Maybe Integer
 >     , recurBySecond :: Maybe SecList
 >     , recurByMinute :: Maybe MinList
@@ -87,9 +92,16 @@ should be a more elegant structure that will encompass the same functionlity.
 > type WeekNoList = [Integer]
 > type MonthList = [System.Time.Month]
 > type SetPositionList = [Integer]
+> data Frequency = Secondly
+>                | Minutely
+>                | Hourly
+>                | Daily
+>                | Weekly
+>                | Monthly
+>                | Yearly
 > -- WeekDayNum Sign OrdWeek DayOfWeek
 > data WeekDayNum = WeekDayNum Sign Integer System.Time.Day
-> type icalTime             = TimeOfDay
+> type ICalTime             = TimeOfDay
 > -- for URI use import Network.URI
 > data UTCOffset = UTCOffset Sign Integer Integer Integer
 > data Sign = Positive | Negative
@@ -141,16 +153,16 @@ object. The default value is "GREGORIAN".
 >             | Request
  
 > data VEvent = VEvent 
->                 { eventStamp    :: LocalTime
+>                 { eventStamp    :: ICalDateTime
 >                 , eventUID      :: UID
->                 , eventCreated  :: LocalTime
->                 , lastModified  :: LocalTime
->                 , eventStart    :: LocalTime
->                 , eventEnd      :: LocalTime
+>                 , eventCreated  :: ICalDateTime
+>                 , lastModified  :: ICalDateTime
+>                 , eventStart    :: ICalDateTime
+>                 , eventEnd      :: ICalDateTime
 >                 , sequence      :: Int
 >                 , description   :: String
 >                 , location      :: String
->                 , status        :: Status
+>                 , status        :: EventStatus
 >                 , summary       :: String
 >                 , transparency  :: Transparency
 >                 , repeat        :: RepeatRule
@@ -189,17 +201,15 @@ object. The default value is "GREGORIAN".
 > data MimeType -- this is defined by RFC4288
 > 
 > data Trigger = DurationTrigger Duration
->              | DateTimeTrigger LocalTime
+>              | DateTimeTrigger ICalDateTime
 > 
 > data TimeOrDuration = DurationOption Duration
->                     | TimeOption DateType
-> 
-> data DateType = DateTime LocalTime
->               | Date Day
+>                     | DateTimeOption ICalDateTime
+>                     | DateOption ICalDate
 > 
 > 
 > data VTodo = VTodo 
->                 { todoStamp           :: LocalTime -- Required
+>                 { todoStamp           :: ICalDateTime
 >                 , todoCreated         :: Maybe LocalTime -- Optional
 >                 , todoLastModified    :: Maybe LocalTime -- Optional
 >                 , todoLocation        :: Maybe String -- Optional
@@ -212,10 +222,11 @@ object. The default value is "GREGORIAN".
 >                 , todoDescription     :: Maybe String
 >                 , todoAlarms          :: [VAlarm]
 >                 , todoRRule           :: Maybe RRule
+>                 , todoStatus          :: Maybe TodoStatus
 >                 -- These seem to be common to many different places and should be refactored (they are optional)
 >                 , todoResources       :: Resources -- What are the resources? They seem to be a comma separated 
 >                                                   -- list of resources that you will need for the event
->                 { todoAttachments     :: [Attachment] 
+>                 , todoAttachments     :: [Attachment] 
 >                 , todoAttendees       :: [Attendee] 
 >                 , todoCategories      :: [Category] 
 >                 , todoComments        :: [String] 
@@ -224,7 +235,7 @@ object. The default value is "GREGORIAN".
 >                 , todoRequestStatus   :: Maybe RequestStatus
 >                 , todoRelated         :: Maybe Relationship -- I think that this says that it is related to other issues, this suggests
 >                                     -- some sort of indexing system
->                 , todoProperties :: ? -- These are extra vendor specific properties meant for extensions
+>                 -- , todoProperties :: ? -- These are extra vendor specific properties meant for extensions
 >                 }
 
 Purpose: This property defines the equipment or resources anticipated for an activity specified by a 
@@ -236,14 +247,22 @@ calendar component.
 >                   | Sibling
 >                   | Parent
  
-> data ParticipantStatus = NeedsAction
->                        | Accepted
->                        | Declined
->                        | Tentative
->                        | Delegated
->                        | Completed
->                        | InProcess
- 
+In section 3.8.1.11 of the Spec it gives one status type but I think that this is wrong I would sleep more 
+soundly knowing that you can only put the correct types in the todo item.
+
+> data TodoStatus = NeedsAction
+>                 | Completed
+>                 | InProgress
+>                 | TodoCancelled
+
+> data EventStatus = Tentative
+>                  | Confirmed
+>                  | EventCancelled
+
+> data JournalStatus = Draft
+>                    | Final
+>                    | JournalCancelled
+
 > data FreeBusyTypes = Free
 >                    | Busy
 >                    | BusyUnavaliable
@@ -269,7 +288,7 @@ calendar component.
 >                   | ClientError        Integer
 >                   | SchedulingError    Integer
  
-> data Status = Status StatusResult String (Maybe String)
+> data RequestStatus = RequestStatus StatusResult String (Maybe String)
  
 > data VJournal = VJournal 
 >                 { journalStamp          :: LocalTime -- Required
@@ -293,15 +312,15 @@ calendar component.
 >                 , journalDescription    :: Maybe String
 >                 , journalExcludedDates  :: [DateType]
 >                 , journalRelated        :: Maybe String -- The UID of the object that it is related to
->                 , journalRDate          :: Maybe ?
->                 , journalRequestStatus  :: Maybe Status
+>                 , journalRDate          :: Maybe RDate
+>                 , journalRequestStatus  :: Maybe RequestStatus
 >                 }
 > 
 > data Recurrence = DateRecurrence RDate
 >                 | RuleRecurrence RRule
 > 
-> data RDate = RDateTime  [LocalTime]
->            | RDate      [Day]
+> data RDate = RDateTime  [ICalDateTime]
+>            | RDate      [ICalDate]
 > 
 > data VFreeBusy = VFreeBusy 
 >                 { stamp         :: LocalTime  -- Required
@@ -329,7 +348,7 @@ calendar component.
 >                 , tzpOffsetFrom :: UtcOffset
 >                 , tzpRRule :: Maybe RRule
 >                 , tzpComment :: Maybe String
->                 , tzpRDate :: Maybe ?
+>                 , tzpRDate :: Maybe RDate
 >                 , tzName :: Maybe String
 >                 }
 > 
