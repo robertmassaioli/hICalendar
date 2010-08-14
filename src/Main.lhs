@@ -1,4 +1,5 @@
-# ICalendar Library
+ICalendar Library
+=================
 
 > {-
 > importICalendar :: String -> IO ICalendar
@@ -25,7 +26,8 @@ said at the same time.
 
 > module Main where
 
-## Property Vaule Data Types
+Property Vaule Data Types
+-------------------------
 
 The iCalendar is made up of a bunch of content lines each that have Property, Attribute
 Value trios. The values that these properties can hold are.
@@ -105,6 +107,7 @@ Use:
  - TimeOfDay for Time's
  
 The iCalendar must have atleast one component which is not made obvious by this structure
+
 > data ICalendar = ICalendar 
 >                     -- Calendar Metadata
 >                     { productID     :: String
