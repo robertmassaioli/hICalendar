@@ -2,6 +2,7 @@ module Main where
 
 -- Some template functions that as a first step we wish to implement.
 
+{-
 importICalendar :: String -> IO ICalendar
 importICalendar filename = undefined
 
@@ -13,6 +14,7 @@ readICalendar inputString = undefined
 
 showICalendar :: ICalendar -> String
 showICalendar calendar = undefined
+-}
 
 -- showICalendar . readICalendar should be the identity, ignoring whitespace
 
@@ -25,16 +27,13 @@ showICalendar calendar = undefined
  -  TimeOfDay for Time's
  -}
 
-data Times = DateTime LocalTime
-           | Date Day
-           | Time TimeOfDay
-
+-- The iCalendar must have atleast one component which is not made obvious by this structure
 data ICalendar = ICalendar 
                     -- Calendar Metadata
                     { productID     :: String
                     , version       :: Float
-                    , calscale      :: CalendarScale
-                    , method        :: Method
+                    , calscale      :: Maybe CalendarScale
+                    , method        :: Maybe Method
                     , calendarName  :: String
                     -- Calendar Components
                     , events        :: [VEvent]
@@ -52,8 +51,9 @@ data Method = Publish
             | Request
 
 data VEvent = VEvent 
-                { eventStamp         :: LocalTime
-                , eventCreated       :: LocalTime
+                { eventStamp    :: LocalTime
+                , eventUID      :: UID
+                , eventCreated  :: LocalTime
                 , lastModified  :: LocalTime
                 , eventStart    :: LocalTime
                 , eventEnd      :: LocalTime
@@ -88,13 +88,12 @@ data VAlarm = AudioProperties
                 , alarmTrigger            :: Trigger
                 , alarmSummary            :: String
                 , alarmAttendees          :: [Attendee] -- This list must have atleast one element.
-                , alarmDurationAndRepeat  :: Maybe ?
+                , alarmDurationAndRepeat  :: Maybe (Duration, Repeat)
                 , alarmAttachments        :: [Attachment]
                 }
 
-data Attachment = Attachment MimeType URI
 
-data URI -- this is defined by RFC 3986
+data Attachment = Attachment MimeType URI
 
 -- They are all avaliable online here: http://www.iana.org/assignments/media-types/
 data MimeType -- this is defined by RFC4288
@@ -124,7 +123,8 @@ data VTodo = VTodo
                 , todoAlarms          :: [VAlarm]
                 , todoRRule           :: Maybe RRule
                 -- These seem to be common to many different places and should be refactored (they are optional)
-                , todoResources       :: ? -- What are the resources
+                , todoResources       :: Resources -- What are the resources? They seem to be a comma separated 
+                                                  -- list of resources that you will need for the event
                 { todoAttachments     :: [Attachment] 
                 , todoAttendees       :: [Attendee] 
                 , todoCategories      :: [Category] 
@@ -136,6 +136,8 @@ data VTodo = VTodo
                                     -- some sort of indexing system
                 , todoProperties :: ? -- These are extra vendor specific properties meant for extensions
                 }
+
+type Resources = [String]
 
 data Relationship = Child
                   | Sibling
@@ -230,10 +232,65 @@ data VTimezone = VTimezone
 
 data TimeZoneProperty = TZP 
                 { tzpStart :: LocalTime
-                , tzpOffsetTo :: ?
-                , tzpOffsetFrom :: ?
+                , tzpOffsetTo :: UtcOffset
+                , tzpOffsetFrom :: UtcOffset
                 , tzpRRule :: Maybe RRule
                 , tzpComment :: Maybe String
                 , tzpRDate :: Maybe ?
                 , tzName :: Maybe String
                 }
+
+-- UtcOffset Positive Hour Minute Second
+data UtcOffset = UtcOffset Bool Int Int Int
+
+-- Values (Section 3.2.20)
+type Binary = Word32
+type Boolean = Bool
+data CalAddress = URI
+type Date = Day
+type DateTime = LocalTime
+type Time = TimeOfDay
+-- Section: 3.3.6
+data Duration = DurationDate
+    { durationSign :: Sign
+    , durationWeek :: Integer
+    , durationDay :: Integer
+    , durationHour :: Integer
+    , durationMinute :: Integer
+    , durationSecond :: Integer
+    }
+-- There is a Float datatype, use that
+-- There is an Integer datatype, use that
+data Period = PeriodExplicit DateTime DateTime
+            | PeriodStart DateTime Duration
+data Recur = Recur 
+    { recurFrequency :: Frequency
+    , recurUntilOrCount :: Maybe (Either (Either Date DateTime) Integer)  -- this could be cleaned up
+    , recurInterval :: Maybe Integer
+    , recurBySecond :: Maybe SecList
+    , recurByMinute :: Maybe MinList
+    , recurByHour :: Maybe HourList
+    , recurByDay :: Maybe WeekDayList
+    , recurByMonthDay :: Maybe ModayList
+    , recurByYearDay :: Maybe YearDayList
+    , recurByWeekNumber :: Maybe WeekNoList
+    , recurByMonth :: Maybe MonthList
+    , recurBySetPos :: Maybe SetPositionList
+    , recurWkSt :: Maybe System.Time.Day
+    }
+type SecList = [Integer]
+type MinList = [Integer]
+type HourList = [Integer]
+type WeekDayList = [WeekDayNum]
+type ModayList = [Integer]
+type YearDayList = [Integer]
+type WeekNoList = [Integer]
+type MonthList = [System.Time.Month]
+type SetPositionList = [Integer]
+-- WeekDayNum Sign OrdWeek DayOfWeek
+data WeekDayNum = WeekDayNum Sign Integer System.Time.Day
+type Text = String
+-- for URI use import Network.URI
+-- data UTCOffset = UTCOffset Sign Hour Minute Second
+data UTCOffset = UTCOffset Sign Integer Integer Integer
+data Sign = Positive | Negative

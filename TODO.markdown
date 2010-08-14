@@ -25,6 +25,10 @@ Extra Resources
 
  - We have to figure out how to pass around all of the useful resources (files and urls) that are supposed 
    to be attached to the calendar.
+    - perhaps we should be able to export an entire calendar as a zip file or tar ball so that all the 
+      resources are included
+    - even urls should be downloaded and placed inside of the tar ball, common urls should only be downloaded
+      once obviously.
  - If there is a localhost url that is attched that points to localhost then a warning should come up.
  - You should be able to run a resource check at any time so that you know wether or not you have all of the
    resources that you need to load the ICalendar perfectly.
