@@ -1,4 +1,6 @@
-all: Main.html ICalParse.html
+DOCTARGET=BaseTypes.html ICalParse.html Main.html VAlarm.html VEvent.html VFreeBusy.html VJournal.html VTodo.html
+
+all: $(DOCTARGET)
 
 .SUFFIXES: .html .lhs
 
