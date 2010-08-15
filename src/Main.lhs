@@ -59,6 +59,7 @@ and should just be used directly rather than through another definition.
 > type CalendarUserAddress  = URI
 > type ICalDate             = Data.Time.Calendar.Day
 > type ICalDateTime         = LocalTime
+> type DateType             = Either ICalDateTime ICalDate
 > type Duration             = TimeDiff  -- may need a sign too for direction
 > data Period = PeriodExplicit 
 >               { periodStart :: ICalDateTime 
@@ -68,7 +69,7 @@ and should just be used directly rather than through another definition.
 The size and shape of the Recur structure is currently a mess. It suggests that there
 should be a more elegant structure that will encompass the same functionlity.
 
-> data Recur = Recur 
+> data RRule = Recur 
 >     { recurFrequency :: Frequency
 >     , recurUntilOrCount :: Maybe (Either (Either ICalDate ICalDateTime) Integer)  -- this could be cleaned up
 >     , recurInterval :: Maybe Integer
@@ -117,6 +118,7 @@ Use:
  - LocalTime for Date-Time's
  - Day for Date's
  - TimeOfDay for Time's
+ - TimeZone for UTC Offsets
  
 The iCalendar must have atleast one component which is not made obvious by this structure
 
@@ -165,10 +167,14 @@ object. The default value is "GREGORIAN".
 >                 , status        :: EventStatus
 >                 , summary       :: String
 >                 , transparency  :: Transparency
->                 , repeat        :: RepeatRule
+>                 , repeat        :: RRule
 >                 , eventAlarms   :: [VAlarm]
 >                 }
-> 
+
+This is supposed to be a UID type but I think that it should be changed from a string eventually.
+
+> type UID = String
+
 > data Transparency = Transparent 
 >                   | Opaque
 > 
@@ -189,16 +195,20 @@ object. The default value is "GREGORIAN".
 >                 { alarmDescription        :: String
 >                 , alarmTrigger            :: Trigger
 >                 , alarmSummary            :: String
->                 , alarmAttendees          :: [Attendee] -- This list must have atleast one element.
->                 , alarmDurationAndRepeat  :: Maybe (Duration, Repeat)
+>                 , alarmAttendees          :: [CalendarUserAddress] -- This list must have atleast one element.
+>                 , alarmDurationAndRepeat  :: Maybe (Duration, Repeat) -- Sometimes you want both properties
 >                 , alarmAttachments        :: [Attachment]
 >                 }
 > 
+> type Repeat = Integer -- the number of times to repeat the alarm
 > 
 > data Attachment = Attachment MimeType URI
-> 
+>
+
+The mime type would be better organised with a implementation of RFC4288.
+
 > -- They are all avaliable online here: http://www.iana.org/assignments/media-types/
-> data MimeType -- this is defined by RFC4288
+> type MimeType = String
 > 
 > data Trigger = DurationTrigger Duration
 >              | DateTimeTrigger ICalDateTime
@@ -207,31 +217,29 @@ object. The default value is "GREGORIAN".
 >                     | DateTimeOption ICalDateTime
 >                     | DateOption ICalDate
 > 
-> 
 > data VTodo = VTodo 
 >                 { todoStamp           :: ICalDateTime
->                 , todoCreated         :: Maybe LocalTime -- Optional
->                 , todoLastModified    :: Maybe LocalTime -- Optional
+>                 , todoCreated         :: Maybe ICalDateTime -- Optional
+>                 , todoLastModified    :: Maybe ICalDateTime -- Optional
 >                 , todoLocation        :: Maybe String -- Optional
->                 , todoStart           :: Maybe LocalTime -- Optional
->                 , todoDue             :: TimeOrDuration -- LocalTime or some other form of time Optional
+>                 , todoStart           :: Maybe ICalDateTime -- Optional
+>                 , todoDue             :: TimeOrDuration -- ICalDateTime or some other form of time Optional
 >                 , todoClass           :: Maybe Classification -- Optional
 >                 , todoGeo             :: Maybe (Double, Double) 
 >                 , todoSummary         :: Maybe String
->                 , todoCompleted       :: Maybe LocalTime
+>                 , todoCompleted       :: Maybe ICalDateTime
 >                 , todoDescription     :: Maybe String
 >                 , todoAlarms          :: [VAlarm]
 >                 , todoRRule           :: Maybe RRule
 >                 , todoStatus          :: Maybe TodoStatus
 >                 -- These seem to be common to many different places and should be refactored (they are optional)
->                 , todoResources       :: Resources -- What are the resources? They seem to be a comma separated 
->                                                   -- list of resources that you will need for the event
+>                 , todoResources       :: [Resource] 
 >                 , todoAttachments     :: [Attachment] 
->                 , todoAttendees       :: [Attendee] 
+>                 , todoAttendees       :: [CalendarUserAddress] 
 >                 , todoCategories      :: [Category] 
 >                 , todoComments        :: [String] 
 >                 , todoContact         :: [Contact]
->                 , todoExcludingDates  :: [Times] -- Excluded dates from repeated events.
+>                 , todoExcludingDates  :: [DateType] -- Excluded dates from repeated events.
 >                 , todoRequestStatus   :: Maybe RequestStatus
 >                 , todoRelated         :: Maybe Relationship -- I think that this says that it is related to other issues, this suggests
 >                                     -- some sort of indexing system
@@ -242,6 +250,17 @@ Purpose: This property defines the equipment or resources anticipated for an act
 calendar component.
 
 > type Resource = String
+
+Contact details are anything that can be written as a string, like a street address.
+
+> type Contact = String
+
+This type is defined in section __3.8.1.2__ and it states that categories are just a comma separated
+value type and the only extra property that they can have is the language param. The language tag is
+defined in rfc5646 and it should be implemented too so that it can be used here (section __3.2.10__).
+
+> -- TODO Add language param support to Catergories
+> type Category = String
 
 > data Relationship = Child
 >                   | Sibling
@@ -290,24 +309,25 @@ soundly knowing that you can only put the correct types in the todo item.
  
 > data RequestStatus = RequestStatus StatusResult String (Maybe String)
  
+
 > data VJournal = VJournal 
->                 { journalStamp          :: LocalTime -- Required
+>                 { journalStamp          :: ICalDateTime -- Required
 >                 , journalUID            :: String -- The unique identifier
 >                 , journalClass          :: Maybe Classification 
->                 , journalCreated        :: LocalTime
+>                 , journalCreated        :: ICalDateTime
 >                 , journalStart          :: Maybe DateType
->                 , journalLastModified   :: Maybe LocalTime
+>                 , journalLastModified   :: Maybe ICalDateTime
 >                 , journalOrganizer      :: Maybe String
 >                 , journalRecurrenceID   :: Maybe DateType
 >                 , journalSequence       :: Maybe Integer
->                 , journalStatus         :: Maybe Status
+>                 , journalStatus         :: Maybe JournalStatus
 >                 , journalSummary        :: Maybe String
 >                 , journalUrl            :: Maybe String 
 >                 , journalRRule          :: Maybe RRule
 >                 , journalAttachments    :: [Attachment]
->                 , journalAttendees      :: [Attendee]
+>                 , journalAttendees      :: [CalendarUserAddress]
 >                 , journalCategories     :: [Category]
->                 , journalComments       :: [Comment]
+>                 , journalComments       :: [String]
 >                 , journalContact        :: [Contact]
 >                 , journalDescription    :: Maybe String
 >                 , journalExcludedDates  :: [DateType]
@@ -323,32 +343,31 @@ soundly knowing that you can only put the correct types in the todo item.
 >            | RDate      [ICalDate]
 > 
 > data VFreeBusy = VFreeBusy 
->                 { stamp         :: LocalTime  -- Required
->                 , freebusyStart :: Maybe LocalTime -- Optional
->                 , freebusyEnd   :: Maybe LocalTime -- Optional
+>                 { stamp         :: ICalDateTime  -- Required
+>                 , freebusyStart :: Maybe ICalDateTime -- Optional
+>                 , freebusyEnd   :: Maybe ICalDateTime -- Optional
 >                 , contact       :: Maybe String -- Optional
 >                 , organizer     :: Maybe String -- Optional this is a uri
 >                 , url           :: Maybe String -- Optional
->                 , attendees     :: Maybe [Attendee] -- Optional
->                 , comments      :: Maybe [Comment] -- Optional
+>                 , attendees     :: Maybe [CalendarUserAddress] -- Optional
+>                 , comments      :: Maybe [String] -- Optional
 >                 , requestStatus :: Maybe RequestStatus -- Optional
 >                 }
 > 
 > data VTimezone = VTimezone
 >                 { timezoneID                :: Integer
->                 , timezoneLastModified      :: Maybe LocalTime
+>                 , timezoneLastModified      :: Maybe ICalDateTime
 >                 , timezoneUrl               :: Maybe String
 >                 , timezoneStandardCs        :: [TimeZoneProperty]
 >                 , timezoneDaylightSavings   :: [TimeZoneProperty]
 >                 }
 > 
 > data TimeZoneProperty = TZP 
->                 { tzpStart :: LocalTime
->                 , tzpOffsetTo :: UtcOffset
->                 , tzpOffsetFrom :: UtcOffset
+>                 { tzpStart :: ICalDateTime
+>                 , tzpOffsetTo :: TimeZone
+>                 , tzpOffsetFrom :: TimeZone
 >                 , tzpRRule :: Maybe RRule
 >                 , tzpComment :: Maybe String
 >                 , tzpRDate :: Maybe RDate
 >                 , tzName :: Maybe String
 >                 }
-> 
