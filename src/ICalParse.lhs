@@ -66,12 +66,3 @@ Look at how beautifully small it all is:
 >     <|> string "\n"
 >     <|> string "\r"
 >     <?> "end of line"
-
-Some example code of how you could use it in a main function:
-
-    main = do
-    c <- getContents
-    case parse icalendarFile "(stdin)" c of
-        Left e -> do putStrLn "Error parsing input: "
-                     print e
-        Right r -> mapM_ print r
