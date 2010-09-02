@@ -37,7 +37,8 @@ Importing And Exporting
 -----------------------
 
  - Think about the errors and corner conditions that you are likely to encounter. The file should be able
-   to be loaded in best attempt style every time. A nice, easy on the eyes screen should come up every time.
+   to be loaded in best attempt style every time. A nice, easy on the eyes screen should come up every time 
+   an error is encountered.
 
 What Components are in the Spec?
 ================================
@@ -65,8 +66,3 @@ What are the Steps that you should take to parse the data?
  - Turn the tokens into a parse tree with syntax checking as you go. (tokens are not in the right order)
  - Turn the parse tree into an ICalendar which is made up of the components.
  - Provide a nice interface for querying this ICalendar object.
-
-Important Notes
----------------
-
- - [Date Stamp, Created, Last Modified] :: [LocalTime]

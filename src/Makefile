@@ -1,4 +1,4 @@
-DOCTARGET=BaseTypes.html ICalParse.html Main.html VAlarm.html VEvent.html VFreeBusy.html VJournal.html VTodo.html
+DOCTARGET=BaseTypes.html ICalParse.html Main.html VAlarm.html VEvent.html VFreeBusy.html VJournal.html VTodo.html Folding.html
 HTML_DIR=../build/html/
 
 all: $(DOCTARGET)

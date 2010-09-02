@@ -16,7 +16,7 @@ Dependancies
 All of the Haskell package dependancies can be found in the .cabal file. The other dependancies are listed
 here (complete with install command on the latest stable release of Ubuntu):
 
- - Markdown (sudo apt-get install markdown)
+ - Pandoc for markdown generation.
 
 Five Minute Startup
 ===================
