@@ -1,7 +1,7 @@
 Property Vaule Data Types
 =========================
 
-> module BaseTypes where
+> module Text.ICalendar.BaseTypes where
 >
 > import Data.Time.Calendar
 > import Data.Time.LocalTime

@@ -1,10 +1,10 @@
 VEvent Module
 =============
 
-> module VEvent where
+> module Text.ICalendar.VEvent where
 >
-> import BaseTypes
-> import VAlarm
+> import Text.ICalendar.BaseTypes
+> import Text.ICalendar.VAlarm
 
 > data VEvent = VEvent 
 >                 { eventStamp    :: ICalDateTime

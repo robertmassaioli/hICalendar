@@ -1,10 +1,10 @@
 VTodo Module
 ============
 
-> module VTodo where
+> module Text.ICalendar.VTodo where
 >
-> import BaseTypes
-> import VAlarm
+> import Text.ICalendar.BaseTypes
+> import Text.ICalendar.VAlarm
 
 > data VTodo = VTodo 
 >                 { todoStamp           :: ICalDateTime

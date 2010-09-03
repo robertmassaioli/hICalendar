@@ -1,9 +1,9 @@
 VAlarm Module
 =============
 
-> module VAlarm where
+> module Text.ICalendar.VAlarm where
 > 
-> import BaseTypes
+> import Text.ICalendar.BaseTypes
 
 > -- Each of the constructors is a different action property from 3.8.6.1
 > data VAlarm = AudioProperties

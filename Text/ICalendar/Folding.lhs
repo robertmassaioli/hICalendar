@@ -1,4 +1,4 @@
-ICalnedar Folding
+ICalendar Folding
 =================
 
 There is a process called "Folding" in the ICalendar specification that states that no ICalendar should
@@ -6,7 +6,7 @@ have a line that is longer than 75 characters wide. To maintain this constant ma
 of folding is used to wrap a line into multiple smaller lines and unfolding is the opposite process (but
 not nessecarily the inverse function; an inverse would have been useful for quickcheck testing).
 
-> module Folding (fold, unfold) where
+> module Text.ICalendar.Folding (fold, unfold) where
 > 
 > import Data.List
 > import Data.Char

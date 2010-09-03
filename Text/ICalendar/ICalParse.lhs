@@ -4,7 +4,7 @@ ICalendar Parser
 This file is here for the purpose of parsing an ICalendar into a bunch of content lines. It uses
 Parsec to do most of the heavy lifting work.
 
-> module ICalParse ( ContentLine(..), Attribute(..), icalendarFile ) where
+> module Text.ICalendar.ICalParse ( ContentLine(..), Attribute(..), icalendarFile ) where
 > 
 > import Text.ParserCombinators.Parsec
 

@@ -10,13 +10,10 @@ Name:                hICalendar
 Version:             0.1
 
 -- A short (one-line) description of the package.
-Synopsis:            This is a Library that implements the iCalendar spec (rfc5545)
+Synopsis:            An ICalendar library that implements rfc5545.
 
 -- A longer description of the package.
 -- Description:         
-
--- URL for the project homepage or repository.
-Homepage:            massaioli.homelinux.com/wordpress
 
 -- The license under which the package is released.
 License:             BSD3
@@ -48,10 +45,10 @@ Cabal-version:       >=1.2
 
 Library
   -- Modules exported by the library.
-  Exposed-modules:     Folding, VAlarm, VEvent, VTodo, VFreeBusy, VJournal, Main, ICalParse, BaseTypes, FoldingTest, TestParser
+  Exposed-modules:     Text.ICalendar.Folding, Text.ICalendar.VAlarm, Text.ICalendar.VEvent, Text.ICalendar.VTodo, Text.ICalendar.VFreeBusy, Text.ICalendar.VJournal, Text.ICalendar.ICalParse, Text.ICalendar.BaseTypes
   
   -- Packages needed in order to build this package.
-  -- Build-depends:       
+  Build-depends: base, parsec == 2.1.0.1, network == 2.2.1.7, old-time == 1.0.0.4, time == 1.2.0.2
   
   -- Modules not exported by this package.
   -- Other-modules:       

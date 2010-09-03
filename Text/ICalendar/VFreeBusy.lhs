@@ -1,9 +1,9 @@
 VFreeBusy Module
 ================
 
-> module VFreeBusy where
+> module Text.ICalendar.VFreeBusy where
 >
-> import BaseTypes
+> import Text.ICalendar.BaseTypes
 
 > data VFreeBusy = VFreeBusy 
 >                 { stamp         :: ICalDateTime  -- Required

@@ -1,9 +1,9 @@
 VJournal Module
 ===============
 
-> module VJournal where
+> module Text.ICalendar.VJournal where
 > 
-> import BaseTypes
+> import Text.ICalendar.BaseTypes
 
 > data VJournal = VJournal 
 >                 { journalStamp          :: ICalDateTime -- Required
