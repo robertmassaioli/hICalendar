@@ -31,7 +31,9 @@ Extra Resources
       once obviously.
  - If there is a localhost url that is attched that points to localhost then a warning should come up.
  - You should be able to run a resource check at any time so that you know wether or not you have all of the
-   resources that you need to load the ICalendar perfectly.
+   resources that you need to load the ICalendar perfectly. This would require all sorts of resource checking
+   because you would have to make sure that URL's are correct and that everything is in the expected place from
+   the current location (or even any location that you want to test against).
 
 Importing And Exporting
 -----------------------

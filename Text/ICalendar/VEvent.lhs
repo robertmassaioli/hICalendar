@@ -23,6 +23,8 @@ VEvent Module
 >                 , eventAlarms   :: [VAlarm]
 >                 }
 
+This is covered in section 3.2.12.
+
 > data EventStatus = Tentative
 >                  | Confirmed
 >                  | EventCancelled

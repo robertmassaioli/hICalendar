@@ -18,7 +18,7 @@ not nessecarily the inverse function; an inverse would have been useful for quic
 > unfold (a:as) = a : unfold as
 > 
 > fold :: String -> String
-> fold s = (myjoin "\r\n" $ map (myjoin "\r\n ") $ map foldLine $ mylines s) ++ "\r\n"
+> fold s = (intercalate "\r\n" $ map (intercalate "\r\n ") $ map foldLine $ mylines s) ++ "\r\n"
 >  where
 >    foldLine :: String -> [String]
 >    foldLine s
@@ -34,6 +34,3 @@ not nessecarily the inverse function; an inverse would have been useful for quic
 >                         []      -> []
 >                         ('\r':'\n':s'') -> mylines s''
 >                         ('\n':s'') -> mylines s''
-> 
-> myjoin :: String -> [String] -> String
-> myjoin a = concat . intersperse a
