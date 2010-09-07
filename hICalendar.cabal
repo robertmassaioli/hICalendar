@@ -13,7 +13,7 @@ Version:             0.1
 Synopsis:            An ICalendar library that implements rfc5545.
 
 -- A longer description of the package.
--- Description:         
+Description: This package implements an iCalendar library so that people can enjoy easy and intuiative Internet Calendaring for great good.         
 
 -- The license under which the package is released.
 License:             BSD3
@@ -37,7 +37,7 @@ Build-type:          Simple
 
 -- Extra files to be distributed with the package, such as examples or
 -- a README.
--- Extra-source-files:  
+Extra-source-files: NamingConventions.markdown, README.markdown, TODO.markdown, "iCalendar in five Minutes.markdown"
 
 -- Constraint on the version of Cabal needed to build this package.
 Cabal-version:       >=1.2

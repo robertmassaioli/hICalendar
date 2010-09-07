@@ -4,6 +4,8 @@ What Do We Want?
  - Before we actually get into the thick of the problem we have to completely generate the data structures
    that we are going to use and then reason about what we are then going to require in our programs. This 
    will likely be one of the trickiest parts of the planning process.
+ - Print off the last few pages of the spec that contain every object and go through each and every single one
+   and reason about what we will need for it.
  - We want to get out a bunch of easy to read data that we can just use in our program.
  - It should be as simple an readICalendar :: ByteString -> ICalendar
  - Well want to iterate over the events in a nice and easy way so that we could print them out to the screen.
