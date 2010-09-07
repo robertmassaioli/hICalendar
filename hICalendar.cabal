@@ -37,7 +37,7 @@ Build-type:          Simple
 
 -- Extra files to be distributed with the package, such as examples or
 -- a README.
-Extra-source-files: NamingConventions.markdown, README.markdown, TODO.markdown, "iCalendar in five Minutes.markdown"
+Extra-source-files: doc/*.markdown README.markdown
 
 -- Constraint on the version of Cabal needed to build this package.
 Cabal-version:       >=1.2
