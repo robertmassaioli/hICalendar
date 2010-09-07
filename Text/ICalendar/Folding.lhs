@@ -19,14 +19,17 @@ not nessecarily the inverse function; an inverse would have been useful for quic
 > unfold (a:as) = a : unfold as
 > 
 > fold :: String -> String
-> fold s = (intercalate "\r\n" . map (intercalate "\r\n ") . map foldLine . mylines $ s) ++ "\r\n"
+> fold = intercalate "\r\n" . map (intercalate "\r\n ") . map foldLine . mylines
 >  where
->    foldLine :: String -> [String]
->    foldLine s
->      | length s > 75 = start : foldLine end
+>    foldLineHelper :: Int -> String -> [String]
+>    foldLineHelper amount s
+>      | length s > amount = start : foldNextLine end
 >      | otherwise = [s]
 >      where
->        (start, end) = splitAt 75 s
+>        (start, end) = splitAt amount s
+>    
+>    foldLine = foldLineHelper 75
+>    foldNextLine = foldLineHelper 74
 > 
 > mylines    :: String -> [String]
 > mylines "" =  []
