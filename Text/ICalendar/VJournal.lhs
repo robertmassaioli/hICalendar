@@ -18,7 +18,7 @@ VJournal Module
 >                 , journalStatus         :: Maybe JournalStatus
 >                 , journalSummary        :: Maybe String
 >                 , journalUrl            :: Maybe String 
->                 , journalRRule          :: Maybe RRule
+>                 , journalRRule          :: Maybe RRule -- what does a repeat rule even mean on a journal entry?
 >                 , journalAttachments    :: [Attachment]
 >                 , journalAttendees      :: [Attendee]
 >                 , journalCategories     :: [Category]

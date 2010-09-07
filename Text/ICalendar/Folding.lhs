@@ -11,14 +11,15 @@ not nessecarily the inverse function; an inverse would have been useful for quic
 > import Data.List
 > import Data.Char
 > 
+> -- for some reason the constant unfold cs lines seem like they could be optimised.
 > unfold :: String -> String
 > unfold [] = []
-> unfold ('\r':'\n':c:cs) = if isSpace c then unfold . dropWhile isSpace $ cs else '\r':'\n':unfold (c:cs)
-> unfold ('\n':c:cs) = if isSpace c then unfold . dropWhile isSpace $ cs else '\n':unfold (c:cs)
+> unfold ('\r':'\n':c:cs) = if isSpace c then unfold cs else '\r':'\n':unfold (c:cs)
+> unfold ('\n':c:cs) = if isSpace c then unfold cs else '\n':unfold (c:cs)
 > unfold (a:as) = a : unfold as
 > 
 > fold :: String -> String
-> fold s = (myjoin "\r\n" $ map (myjoin "\r\n ") $ map foldLine $ mylines s) ++ "\r\n"
+> fold s = (intercalate "\r\n" . map (intercalate "\r\n ") . map foldLine . mylines $ s) ++ "\r\n"
 >  where
 >    foldLine :: String -> [String]
 >    foldLine s
@@ -34,6 +35,3 @@ not nessecarily the inverse function; an inverse would have been useful for quic
 >                         []      -> []
 >                         ('\r':'\n':s'') -> mylines s''
 >                         ('\n':s'') -> mylines s''
-> 
-> myjoin :: String -> [String] -> String
-> myjoin a = concat . intersperse a

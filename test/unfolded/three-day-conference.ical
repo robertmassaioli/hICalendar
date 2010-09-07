@@ -10,8 +10,6 @@ DTEND:19960920T220000Z
 STATUS:CONFIRMED
 CATEGORIES:CONFERENCE
 SUMMARY:Networld+Interop Conference
-DESCRIPTION:Networld+Interop Conference
- and Exhibit\nAtlanta World Congress Center\n
- Atlanta\, Georgia
+DESCRIPTION:Networld+Interop Conference and Exhibit\nAtlanta World Congress Center\nAtlanta\, Georgia
 END:VEVENT
 END:VCALENDAR

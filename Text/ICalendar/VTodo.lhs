@@ -19,7 +19,7 @@ VTodo Module
 >                 , todoCompleted       :: Maybe ICalDateTime
 >                 , todoDescription     :: Maybe String
 >                 , todoAlarms          :: [VAlarm]
->                 , todoRRule           :: Maybe RRule
+>                 , todoRRule           :: Maybe RRule -- this makes sense, for example weekly shopping or chores
 >                 , todoStatus          :: Maybe TodoStatus
 >                 -- These seem to be common to many different places and should be refactored (they are optional)
 >                 , todoResources       :: [Resource] 

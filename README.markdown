@@ -7,7 +7,7 @@ About
 =====
 
 This is a project written in Haskell for easy access to ICalendar data. Haskell was chosen as the language
-as the language because of its ability to reduce bugs, enable good testing and produce reliable software.
+because of its ability to reduce bugs, enable good testing and produce reliable software.
 The end goal of this project is to be a one stop shop for people looking to deal with ICalendar data.
 
 Dependancies

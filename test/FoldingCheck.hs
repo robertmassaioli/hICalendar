@@ -1,4 +1,4 @@
-import Folding
+import Text.ICalendar.Folding
 
 main :: IO ()
 main = do
