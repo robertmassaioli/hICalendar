@@ -8,6 +8,7 @@ Name:                hICalendar
 -- (http://www.haskell.org/haskellwiki/Package_versioning_policy) for
 -- standards guiding when and how versions should be incremented.
 Version:             0.1
+Stability:           experimental
 
 -- A short (one-line) description of the package.
 Synopsis:            An ICalendar library that implements rfc5545.
@@ -17,8 +18,6 @@ Description: This package implements an iCalendar library so that people can enj
 
 -- The license under which the package is released.
 License:             BSD3
-
--- The file containing the license text.
 License-file:        LICENSE
 
 -- The package author(s).
@@ -40,7 +39,7 @@ Build-type:          Simple
 Extra-source-files: doc/*.markdown README.markdown
 
 -- Constraint on the version of Cabal needed to build this package.
-Cabal-version:       >=1.2
+Cabal-version:       >=1.6
 
 Flag test
     Description: Build the test suite.
@@ -51,7 +50,9 @@ Library
   Exposed-modules:     Text.ICalendar.Folding, Text.ICalendar.VAlarm, Text.ICalendar.VEvent, Text.ICalendar.VTodo, Text.ICalendar.VFreeBusy, Text.ICalendar.VJournal, Text.ICalendar.ICalParse, Text.ICalendar.BaseTypes
   
   -- Packages needed in order to build this package.
-  Build-depends: base, parsec == 2.1.0.1, network == 2.2.1.7, old-time == 1.0.0.4, time == 1.2.0.2
+  -- Please note that this is just what I can confirm, I am not actually sure what it is capable of. Please
+  -- extend these if all of the tests pass for you on a different version.
+  Build-depends: base == 4.2.0.0, parsec == 2.1.0.1, network == 2.2.1.7, old-time == 1.0.0.4, time == 1.2.0.2
   
   -- Modules not exported by this package.
   -- Other-modules:       
@@ -66,3 +67,8 @@ Executable fold_tester
         Buildable: False
 
     Main-Is: test/FoldingCheck.hs
+
+source-repository head
+    type: git
+    location: git://github.com/robertmassaioli/hICalendar.git
+    branch: master
