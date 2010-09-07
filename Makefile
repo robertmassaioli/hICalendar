@@ -9,8 +9,12 @@ markdown=markdown-calibre
 
 all: doc
 
-build: hICalendar.cabal
+build: 
 	runhaskell Setup.hs configure
+	runhaskell Setup.hs build
+
+test: 
+	runhaskell Setup.hs configure -ftest
 	runhaskell Setup.hs build
 
 install: hICalendar.cabal

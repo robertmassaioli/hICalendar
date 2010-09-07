@@ -4,6 +4,8 @@ What Do We Want?
  - Before we actually get into the thick of the problem we have to completely generate the data structures
    that we are going to use and then reason about what we are then going to require in our programs. This 
    will likely be one of the trickiest parts of the planning process.
+ - Print off the last few pages of the spec that contain every object and go through each and every single one
+   and reason about what we will need for it.
  - We want to get out a bunch of easy to read data that we can just use in our program.
  - It should be as simple an readICalendar :: ByteString -> ICalendar
  - Well want to iterate over the events in a nice and easy way so that we could print them out to the screen.
@@ -31,7 +33,9 @@ Extra Resources
       once obviously.
  - If there is a localhost url that is attched that points to localhost then a warning should come up.
  - You should be able to run a resource check at any time so that you know wether or not you have all of the
-   resources that you need to load the ICalendar perfectly.
+   resources that you need to load the ICalendar perfectly. This would require all sorts of resource checking
+   because you would have to make sure that URL's are correct and that everything is in the expected place from
+   the current location (or even any location that you want to test against).
 
 Importing And Exporting
 -----------------------
