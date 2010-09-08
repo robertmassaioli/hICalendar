@@ -29,11 +29,11 @@ Reading
 Much of this project is already well documented in the rfc's that it is based on. I would reccomend getting
 [qrfcview][1] and using it to view the following rfc's:
 
-__Important__
+**Important**
 
  - rfc5545
 
-__Not So Important__
+**Not So Important**
 
  - rfc2045
  - rfc3986
@@ -48,4 +48,5 @@ There is basically only one way to make extensions to the format and that is whe
 x-prop or iana-prop setting. The parser meerly needs to read this in as a string because it can do nothing 
 clever with it. It is completely upto the extension writer to do something clever with that extra string.
 
- [1]: qrfcview.berlios.de
+ [1]: http://qrfcview.berlios.de
+
