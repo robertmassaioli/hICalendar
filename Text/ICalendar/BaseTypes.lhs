@@ -21,7 +21,7 @@ Value trios. The values that these properties can hold are.
  - Integer (Natural: _Integer_)
  - Period of Time
  - Recurrence Rule
- - Text (Natural: _String_)
+ - Text (Includes the language of the text too)
  - Time
  - URI (Uniform Resource Identifier)
  - UTC (Coordinated Universal Time) Offset
@@ -43,6 +43,11 @@ and should just be used directly rather than through another definition.
 >               { periodStart :: ICalDateTime 
 >               , periodEnd   :: ICalDateTime }
 >             | PeriodStart ICalDateTime Duration
+>
+> data Text = Text 
+>               { textLanguage :: String
+>               , value :: String 
+>               }
 
 The size and shape of the Recur structure is currently a mess. It suggests that there
 should be a more elegant structure that will encompass the same functionlity.
@@ -114,6 +119,7 @@ An attachment is common to all of the ICalendar Components:
 Section __3.8.1.3__ of the spec defines the classification level that various components may have.
 This seems to only be used for Journals and Todo items.
 
+> -- First Run
 > data Classification = Public
 >                     | Private
 >                     | Confidential
@@ -157,3 +163,17 @@ Attendee's are defined in section __3.8.4.1__ of the spec.
 > data Attendee = Attendee 
 >                   { attendeeAddress :: CalendarUserAddress
 >                   , attendeeType :: CalendarUserType }
+
+Specified in section __3.8.4.4__ of the spec.
+
+> data Organiser = Organiser
+>                   { commonName :: Maybe String -- Optional
+>                   , dir :: Maybe URI -- Optional
+>                   , sentbyparam :: Maybe -- Optional
+>                   , language :: Maybe String -- Optional
+>                   , address :: CalendarUserAddress
+>                   }
+>
+> type Priority = Int -- Beware: This value is in the range 0-9 where 0 is undefined and 1 is High, 5 is Normal and 9 is Low
+> type Percent = Int -- This number should be in the integer range [0-100]
+
