@@ -169,7 +169,7 @@ Specified in section __3.8.4.4__ of the spec.
 > data Organiser = Organiser
 >                   { commonName :: Maybe String -- Optional
 >                   , dir :: Maybe URI -- Optional
->                   , sentbyparam :: Maybe -- Optional
+>                   , sentbyparam :: Maybe CalendarUserAddress -- Optional
 >                   , language :: Maybe String -- Optional
 >                   , address :: CalendarUserAddress
 >                   }
