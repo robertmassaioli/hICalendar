@@ -23,9 +23,29 @@ Five Minute Startup
 
 Since there is no code there is no startup guide, wait for it, it will come and it will be awesome.
 
+Reading
+=======
+
+Much of this project is already well documented in the rfc's that it is based on. I would reccomend getting
+[qrfcview][1] and using it to view the following rfc's:
+
+__Important__
+
+ - rfc5545
+
+__Not So Important__
+
+ - rfc2045
+ - rfc3986
+ - rfc4288
+ - rfc4648
+ - rfc5646
+
 Extensions
 ==========
 
 There is basically only one way to make extensions to the format and that is wherever the spec has an extra
 x-prop or iana-prop setting. The parser meerly needs to read this in as a string because it can do nothing 
 clever with it. It is completely upto the extension writer to do something clever with that extra string.
+
+ [1]: qrfcview.berlios.de
