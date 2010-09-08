@@ -1,6 +1,10 @@
 VAlarm Module
 =============
 
+Apparently "Applications must ignore alarms with x-name and iana-token values they don't recognize". I think
+that perhaps we will just give a best effort instead and print out a warning to the log that the property was
+not honoured.
+
 > module Text.ICalendar.VAlarm where
 > 
 > import Text.ICalendar.BaseTypes
