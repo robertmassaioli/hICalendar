@@ -44,7 +44,7 @@ data Component = VEvent  -- First Run
                   , createdStamp        :: Maybe ICalDateTime -- Optional
                   , lastModifiedStamp   :: Maybe ICalDateTime -- Optional
                   , start               :: Maybe DateType -- Sometimes required and sometimes optional, nasty
-                  , due                 :: Maybe TimeOrDuration -- This is the 'end' property and apparently it is optional...but what happens when you need it
+                  , endOrDuration                 :: Maybe TimeOrDuration -- This is the 'end' property and apparently it is optional...but what happens when you need it
                   , description         :: Maybe Text -- Optional
                   , summary             :: Maybe Text -- Optional
                   , organiser           :: Maybe Organiser
@@ -61,7 +61,7 @@ data Component = VEvent  -- First Run
                   , attendees           :: [Attendee]
                   , categories          :: [Category]
                   , comments            :: [Text]
-                  , contact             :: [Contact]
+                  , contacts            :: [Contact]
                   , requestStatus       :: [RequestStatus]
                   , related             :: [Relationship]
                   , resources           :: [Resource]
@@ -92,7 +92,7 @@ data Component = VEvent  -- First Run
                   , attendees           :: [Attendee] 
                   , categories          :: [Category] 
                   , comments            :: [Text] 
-                  , contact             :: [Contact]
+                  , contacts            :: [Contact]
                   , requestStatus       :: [RequestStatus]
                   , related             :: [Relationship] -- I think that this says that it is related to other issues, this suggests it should probably be a UID reference
                   , alarms              :: [VAlarm]
@@ -104,12 +104,12 @@ data Component = VEvent  -- First Run
                   , createdStamp        :: Maybe ICalDateTime -- Optional
                   , lastModifiedStamp   :: Maybe ICalDateTime -- Optional
                   , start               :: Maybe DateType -- Optional
-                  , organiser           :: Maybe String -- Optional
+                  , organiser           :: Maybe Organiser -- Optional
                   , recurrence_id       :: Maybe DateType -- Optional
                   , sequence            :: Maybe Integer -- Optional
                   , journalStatus       :: Maybe JournalStatus -- Optional
-                  , summary             :: Maybe String -- Optional
-                  , description         :: Maybe String -- Optional (Technically there can be more than one of these, just append it together)
+                  , summary             :: Maybe Text -- Optional
+                  , description         :: Maybe Text -- Optional (Technically there can be more than one of these, just append it together)
                   , url                 :: Maybe URI
                   , rrule               :: Maybe RRule -- what does a repeat rule even mean on a journal entry?
                   , rdate               :: [RDate]

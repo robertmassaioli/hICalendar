@@ -47,7 +47,7 @@ Flag test
 
 Library
   -- Modules exported by the library.
-  Exposed-modules:     Text.ICalendar.Components, Text.ICalendar.BaseTypes
+  Exposed-modules:     Text.ICalendar.Components, Text.ICalendar.BaseTypes, Text.ICalendar.Folding
   
   -- Packages needed in order to build this package.
   -- Please note that this is just what I can confirm, I am not actually sure what it is capable of. Please
