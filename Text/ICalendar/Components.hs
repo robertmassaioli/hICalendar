@@ -10,16 +10,10 @@ import Network.URI
  -  - If the item can have multiple entries then it is always displayed as a type '[a]' wether it is optional or not.
  -
  - TODO Check the list of all of the properties that each component should have and make sure that they have them then resolve the differences.
- - TODO Find a nice combined representation for repeat dates.
+ - TODO Find a nice combined representation for repeat dates, rules and exdates.
  - TODO Find a way to have a nice extension mechanism for all of the X-* properties.
  - TODO Actually use the Text parameter because it allows you to specify the language that is being used.
  - TODO See everything that uses Alternate Representation Parameters (altrepparam) and see if there is a nice way to slot it in. 
- -    Elements that have altparam, languageparam and other-param (try section 3.8.1):
- -       - Summary
- -       - Description
- -       - Location
- -       - Comment
- -
  - TODO Apparently RRules 'should not' appear more than once in any given event, but what if they do? Do we ignore one or do we superimpose them?
  -      Superposition would be more fun.
  - TODO Figure out how recurrance_id's work. It works in conjunction with sequence and uid apparently.
@@ -28,12 +22,6 @@ import Network.URI
  - TODO Find out what the 'related' property is on about.
  - TODO Is there a way of merging the journal, event and todo statuses?
  -
- - Conflicts:
- -  Start and End/Duration will cause conflicts.
- -  Status may or may not be optional?
- -  Summaries may be optional.
- -  The use of the word related conflicts.
- -  Geolocation does not seem to be represented the same way.
  -}
 
 data Component = VEvent  -- First Run
@@ -44,12 +32,13 @@ data Component = VEvent  -- First Run
                   , createdStamp        :: Maybe ICalDateTime -- Optional
                   , lastModifiedStamp   :: Maybe ICalDateTime -- Optional
                   , start               :: Maybe DateType -- Sometimes required and sometimes optional, nasty
-                  , endOrDuration                 :: Maybe TimeOrDuration -- This is the 'end' property and apparently it is optional...but what happens when you need it
-                  , description         :: Maybe Text -- Optional
-                  , summary             :: Maybe Text -- Optional
+                  , endOrDuration       :: Maybe TimeOrDuration -- What happens when you dont have this?
+                  , description         :: Maybe DescriptiveText -- Optional
+                  , summary             :: Maybe DescriptiveText -- Optional
                   , organiser           :: Maybe Organiser
                   , priority            :: Maybe Priority -- Optional
-                  , location            :: Maybe Text -- Optional The value is a Text parameter but it has an altparam too
+                  , location            :: Maybe DescriptiveText -- Optional The value is a Text parameter but it has an altparam too
+                  , geo                 :: Maybe GeographicPosition -- Optional
                   , classification      :: Maybe Classification -- Optional
                   , eventStatus         :: Maybe EventStatus -- Optional
                   , transparency        :: Maybe Transparency -- Optional
@@ -59,12 +48,12 @@ data Component = VEvent  -- First Run
                   , url                 :: Maybe URI
                   , attachments         :: [Attachment]
                   , attendees           :: [Attendee]
-                  , categories          :: [Category]
-                  , comments            :: [Text]
+                  , categories          :: [Text]
+                  , comments            :: [DescriptiveText]
                   , contacts            :: [Contact]
                   , requestStatus       :: [RequestStatus]
                   , related             :: [Relationship]
-                  , resources           :: [Resource]
+                  , resources           :: [DescriptiveText]
                   , alarms              :: [VAlarm]
                   }
                | VTodo -- First Run (3.6.2)
@@ -73,25 +62,25 @@ data Component = VEvent  -- First Run
                   , url                 :: Maybe URI
                   , createdStamp        :: Maybe ICalDateTime -- Optional
                   , lastModifiedStamp   :: Maybe ICalDateTime -- Optional
-                  , location            :: Maybe Text -- Optional
                   , start               :: Maybe DateType -- Optional
                   , due                 :: TimeOrDuration -- ICalDateTime or some other form of time Optional
                   , classification      :: Maybe Classification -- Optional
-                  , geo                 :: Maybe (Double, Double) -- Optional
-                  , summary             :: Maybe Text -- Optional
+                  , location            :: Maybe DescriptiveText -- Optional
+                  , geo                 :: Maybe GeographicPosition -- Optional
+                  , summary             :: Maybe DescriptiveText -- Optional
                   , todoStatus          :: Maybe TodoStatus
-                  , description         :: Maybe Text -- Optional
+                  , description         :: Maybe DescriptiveText -- Optional
                   , completed           :: Maybe ICalDateTime -- Optional (3.8.2.1)
                   , rrule               :: Maybe RRule -- this makes sense, for example weekly shopping or chores
                   , rdate               :: [RDate]
                   , exdates             :: [DateType] -- Excluded dates from repeated events.
                   , organiser           :: Maybe Organiser -- Optional
                   , percent             :: Maybe Percent
-                  , resources           :: [Resource] 
+                  , resources           :: [DescriptiveText] 
                   , attachments         :: [Attachment] 
                   , attendees           :: [Attendee] 
-                  , categories          :: [Category] 
-                  , comments            :: [Text] 
+                  , categories          :: [Text] 
+                  , comments            :: [DescriptiveText] 
                   , contacts            :: [Contact]
                   , requestStatus       :: [RequestStatus]
                   , related             :: [Relationship] -- I think that this says that it is related to other issues, this suggests it should probably be a UID reference
@@ -108,16 +97,16 @@ data Component = VEvent  -- First Run
                   , recurrence_id       :: Maybe DateType -- Optional
                   , sequence            :: Maybe Integer -- Optional
                   , journalStatus       :: Maybe JournalStatus -- Optional
-                  , summary             :: Maybe Text -- Optional
-                  , description         :: Maybe Text -- Optional (Technically there can be more than one of these, just append it together)
+                  , summary             :: Maybe DescriptiveText -- Optional
+                  , description         :: Maybe DescriptiveText -- Optional (Technically there can be more than one of these, just append it together)
                   , url                 :: Maybe URI
                   , rrule               :: Maybe RRule -- what does a repeat rule even mean on a journal entry?
                   , rdate               :: [RDate]
                   , exdates             :: [DateType]
                   , attachments         :: [Attachment]
                   , attendees           :: [Attendee]
-                  , categories          :: [Category]
-                  , comments            :: [Text]
+                  , categories          :: [Text]
+                  , comments            :: [DescriptiveText]
                   , contacts            :: [Contact]
                   , related             :: [Relationship]
                   , requestStatus       :: [RequestStatus]
@@ -131,7 +120,7 @@ data Component = VEvent  -- First Run
                   , organiser           :: Maybe Organiser -- Optional this is a uri
                   , url                 :: Maybe URI -- Optional
                   , attendees           :: [Attendee] -- Optional
-                  , comments            :: [Text] -- Optional
+                  , comments            :: [DescriptiveText] -- Optional
                   , freebusies          :: [FreeBusyPeriod] -- Optional                
                   , requestStatus       :: [RequestStatus] -- Optional
                   }
@@ -156,9 +145,6 @@ data TimeZoneProperty = TZP
 
 data TimeZoneType = StandardZone | DaylightZone
                             
-
-type Resource = String
-
 data Relationship = Child
                   | Sibling
                   | Parent

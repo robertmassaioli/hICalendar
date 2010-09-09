@@ -48,6 +48,17 @@ and should just be used directly rather than through another definition.
 >               { textLanguage :: String
 >               , value :: String 
 >               }
+>
+> data DescriptiveText = DescriptiveText 
+>                         { alternateRepresentation :: Maybe URI
+>                         , descriptiveValue :: Text }
+> 
+> -- TODO do these need to be doubles?
+> data GeographicPosition = Geo
+>                             { latitude :: Float
+>                             , longitude :: Float
+>                             }
+
 
 The size and shape of the Recur structure is currently a mess. It suggests that there
 should be a more elegant structure that will encompass the same functionlity.
@@ -123,13 +134,6 @@ This seems to only be used for Journals and Todo items.
 > data Classification = Public
 >                     | Private
 >                     | Confidential
-
-This type is defined in section __3.8.1.2__ and it states that categories are just a comma separated
-value type and the only extra property that they can have is the language param. The language tag is
-defined in rfc5646 and it should be implemented too so that it can be used here (section __3.2.10__).
-
-> -- TODO Add language param support to Catergories
-> type Category = String
 
 Contact details are anything that can be written as a string, like a street address.
 
