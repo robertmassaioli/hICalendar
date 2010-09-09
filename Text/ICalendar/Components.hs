@@ -10,12 +10,9 @@ import Network.URI
  -  - If the item can have multiple entries then it is always displayed as a type '[a]' wether it is optional or not.
  -
  - TODO Check the list of all of the properties that each component should have and make sure that they have them then resolve the differences.
- - TODO Find a nice combined representation for repeat dates, rules and exdates.
+ - TODO Find a nice combined representation for repeat dates, rules and exdates so that they can be superimposed.
  - TODO Find a way to have a nice extension mechanism for all of the X-* properties.
  - TODO Actually use the Text parameter because it allows you to specify the language that is being used.
- - TODO See everything that uses Alternate Representation Parameters (altrepparam) and see if there is a nice way to slot it in. 
- - TODO Apparently RRules 'should not' appear more than once in any given event, but what if they do? Do we ignore one or do we superimpose them?
- -      Superposition would be more fun.
  - TODO Figure out how recurrance_id's work. It works in conjunction with sequence and uid apparently.
  - TODO Maybe change DateType to use the forall. construct so that you can just define a single class that does what you need to and
  -      pattern matching on which one it is becomes a thing of the past.
@@ -50,7 +47,7 @@ data Component = VEvent  -- First Run
                   , attendees           :: [Attendee]
                   , categories          :: [Text]
                   , comments            :: [DescriptiveText]
-                  , contacts            :: [Contact]
+                  , contacts            :: [DescriptiveText]
                   , requestStatus       :: [RequestStatus]
                   , related             :: [Relationship]
                   , resources           :: [DescriptiveText]
@@ -81,7 +78,7 @@ data Component = VEvent  -- First Run
                   , attendees           :: [Attendee] 
                   , categories          :: [Text] 
                   , comments            :: [DescriptiveText] 
-                  , contacts            :: [Contact]
+                  , contacts            :: [DescriptiveText]
                   , requestStatus       :: [RequestStatus]
                   , related             :: [Relationship] -- I think that this says that it is related to other issues, this suggests it should probably be a UID reference
                   , alarms              :: [VAlarm]
@@ -107,7 +104,7 @@ data Component = VEvent  -- First Run
                   , attendees           :: [Attendee]
                   , categories          :: [Text]
                   , comments            :: [DescriptiveText]
-                  , contacts            :: [Contact]
+                  , contacts            :: [DescriptiveText]
                   , related             :: [Relationship]
                   , requestStatus       :: [RequestStatus]
                   } 

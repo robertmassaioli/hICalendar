@@ -135,10 +135,6 @@ This seems to only be used for Journals and Todo items.
 >                     | Private
 >                     | Confidential
 
-Contact details are anything that can be written as a string, like a street address.
-
-> type Contact = String
-
 The request status is defined in section __3.8.8.3__ and it contains the statuse code that is
 returned for a scheduling request.
 

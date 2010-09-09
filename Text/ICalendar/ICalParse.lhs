@@ -4,6 +4,10 @@ ICalendar Parser
 This file is here for the purpose of parsing an ICalendar into a bunch of content lines. It uses
 Parsec to do most of the heavy lifting work.
 
+But maybe it would be better to come up with a list of tokens and then go from there?
+> -- TODO decide how you wish to approach the problem of parsing the grammer in the way
+> --      that makes the most sense.
+
 > module Text.ICalendar.ICalParse ( ContentLine(..), Attribute(..), icalendarFile ) where
 > 
 > import Text.ParserCombinators.Parsec

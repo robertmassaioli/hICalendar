@@ -21,7 +21,13 @@ here (complete with install command on the latest stable release of Ubuntu):
 Five Minute Startup
 ===================
 
-Since there is no code there is no startup guide, wait for it, it will come and it will be awesome.
+You cannot do much yet for the moment other than compile the code and that is fairly simple. Perform the 
+following instructions (assuming that you have cabal-install):
+
+    cabal configure
+    cabal build
+
+And that is all that there is to it. I would not reccomend doing a cabal install just yet.
 
 Reading
 =======
