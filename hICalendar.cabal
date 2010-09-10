@@ -52,7 +52,7 @@ Library
   -- Packages needed in order to build this package.
   -- Please note that this is just what I can confirm, I am not actually sure what it is capable of. Please
   -- extend these if all of the tests pass for you on a different version.
-  Build-depends: base == 4.2.0.0, parsec == 2.1.0.1, network == 2.2.1.7, old-time == 1.0.0.4, time == 1.2.0.2
+  Build-depends: base == 4.2.0.0, parsec >= 3, network == 2.2.1.7, old-time == 1.0.0.4, time == 1.2.0.2
   
   -- Modules not exported by this package.
   -- Other-modules:       

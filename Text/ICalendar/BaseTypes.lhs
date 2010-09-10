@@ -176,4 +176,5 @@ Specified in section __3.8.4.4__ of the spec.
 >
 > type Priority = Int -- Beware: This value is in the range 0-9 where 0 is undefined and 1 is High, 5 is Normal and 9 is Low
 > type Percent = Int -- This number should be in the integer range [0-100]
-
+>
+> data CalendarScale = Gregorian

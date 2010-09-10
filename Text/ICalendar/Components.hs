@@ -21,6 +21,14 @@ import Network.URI
  -
  -}
 
+data ICalendar = ICalendar -- Not checked
+                  { version :: Double
+                  , productID :: String
+                  , calendarScale :: CalendarScale
+                  , method :: String -- Nothing is specified but maybe a request
+                  , components :: [Component]
+                  }
+
 data Component = VEvent  -- First Run
                   { stamp               :: ICalDateTime -- Required
                   , uid                 :: UID -- Required
